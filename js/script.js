@@ -44,6 +44,17 @@ const displayLevelWord = (words) => {
   const wordContainer = document.getElementById("word_container");
   wordContainer.innerHTML = "";
 
+  if (words.length == 0) {
+    wordContainer.innerHTML = `
+    <div
+          class="flex flex-col items-center font-bangla  text-center p-4 col-span-full space-y-4 font-bangla"
+        >
+        <img src="photos/alert-error.png" alt="">
+          <p class="text-gray-400">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+          <h2 class="text-4xl text-gray-700">নেক্সট Lesson এ যান</h2>
+        </div>
+    `;
+  }
   //?--->Looping through the array of object for getting every one of them
   words.forEach((word) => {
     console.log(word);
@@ -53,9 +64,15 @@ const displayLevelWord = (words) => {
          <div
           class="bg-white py-10 px-5 text-center rounded-lg shadow-sm space-y-4"
         >
-          <h2 class="text-xl font-bold">${word.word}</h2>
-          <p class="font-semibold">Meaning of the pronounciation</p>
-          <div class="font-bangla font-medium mb-6">${word.meaning}</div>
+          <h2 class="text-xl font-bold">${
+            word.word ? word.word : "Words Unavailable"
+          }</h2>
+          <div class="font-bangla font-medium mb-6">${
+            word.meaning ? word.meaning : "No description"
+          }</div>
+            <p class="font-semibold">${
+              word.pronunciation ? word.pronunciation : "Found No Pronunciation"
+            }</p>
           <div class="flex justify-between items-center">
             <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
               <i class="fa-solid fa-circle-info text-lg"></i>
