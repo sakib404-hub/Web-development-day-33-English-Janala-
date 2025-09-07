@@ -46,12 +46,26 @@ const displayLevelWord = (words) => {
 
   //?--->Looping through the array of object for getting every one of them
   words.forEach((word) => {
+    console.log(word);
     //?Creating an element for storing that value
     const boxDiv = document.createElement("div");
     boxDiv.innerHTML = `
-    <p> Cat </p>
+         <div
+          class="bg-white py-10 px-5 text-center rounded-lg shadow-sm space-y-4"
+        >
+          <h2 class="text-xl font-bold">${word.word}</h2>
+          <p class="font-semibold">Meaning of the pronounciation</p>
+          <div class="font-bangla font-medium mb-6">${word.meaning}</div>
+          <div class="flex justify-between items-center">
+            <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
+              <i class="fa-solid fa-circle-info text-lg"></i>
+            </button>
+            <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
+              <i class="fa-solid fa-volume-high text-lg"></i>
+            </button>
+          </div>
+        </div>
     `;
-
     //?Appending the child to the parent container
     wordContainer.appendChild(boxDiv);
   });
