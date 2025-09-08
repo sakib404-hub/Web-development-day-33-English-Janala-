@@ -1,3 +1,4 @@
+//? Loading the lessons
 const loadLessons = async () => {
   const url = "https://openapi.programming-hero.com/api/levels/all";
   //   fetch(url)
@@ -8,6 +9,7 @@ const loadLessons = async () => {
   displayLessons(data.data);
 };
 
+//? Displaying the lessons
 const displayLessons = (lessons) => {
   //? ----> Getting the container and empty it
   const levelContainer = document.getElementById("level_container");
@@ -156,3 +158,22 @@ const manageSpinner = (status) => {
 };
 
 loadLessons();
+
+document.getElementById("btn-voca-search").addEventListener("click", () => {
+  removeActivation();
+  const input = document.getElementById("input-search");
+  const searchValue = input.value.trim().toLowerCase();
+
+  const url = "https://openapi.programming-hero.com/api/words/all";
+  fetch(url)
+    .then((res) => res.json())
+    .then((words) => {
+      const allWords = words.data;
+
+      const filterWords = allWords.filter((words) =>
+        words.word.toLowerCase().includes(searchValue)
+      );
+      // console.log(filterWords);
+      displayLevelWord(filterWords);
+    });
+});
