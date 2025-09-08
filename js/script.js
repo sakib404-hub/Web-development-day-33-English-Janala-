@@ -31,6 +31,7 @@ const displayLessons = (lessons) => {
 };
 
 const loadLevelWord = (id) => {
+  manageSpinner(true);
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   //// console.log(id);
   //// console.log(url);
@@ -66,6 +67,8 @@ const displayLevelWord = (words) => {
           <h2 class="text-4xl text-gray-700">নেক্সট Lesson এ যান</h2>
         </div>
     `;
+    manageSpinner(false);
+    return;
   }
   //?--->Looping through the array of object for getting every one of them
   words.forEach((word) => {
@@ -86,7 +89,9 @@ const displayLevelWord = (words) => {
               word.pronunciation ? word.pronunciation : "Found No Pronunciation"
             }</p>
           <div class="flex justify-between items-center">
-            <button onclick="my_modal_5.showModal()" class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
+            <button onclick="loadWordDetail(${
+              word.id
+            })" class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
               <i class="fa-solid fa-circle-info text-lg"></i>
             </button>
             <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
@@ -97,7 +102,57 @@ const displayLevelWord = (words) => {
     `;
     //?Appending the child to the parent container
     wordContainer.appendChild(boxDiv);
+    manageSpinner(false);
   });
+};
+
+const loadWordDetail = async (wordId) => {
+  const url = `https://openapi.programming-hero.com/api/word/${wordId}`;
+  const res = await fetch(url);
+  const wordDetails = await res.json();
+  displayWordDetails(wordDetails.data);
+};
+
+const displayWordDetails = (word) => {
+  const detailsBox = document.getElementById("details_container");
+  detailsBox.innerHTML = `
+            <div>
+              <h2 class="text-2xl font-bold">
+                ${word.word} (<i class="fa-solid fa-microphone-lines"></i>:${
+    word.pronunciation
+  })
+              </h2>
+            </div>
+            <div>
+              <h2 class="font-bold">Meaning</h2>
+              <p>${word.meaning}</p>
+            </div>
+            <div>
+              <h2 class="font-bold">Example</h2>
+              <p>
+               ${word.sentence}
+              </p>
+            </div>
+            <div class="space-x-2">
+             ${createElement(word.synonyms)}
+            </div>
+  `;
+
+  document.getElementById("word_modal").showModal();
+};
+const createElement = (arr) => {
+  const createHtmlElements = arr.map((el) => `<span class="btn">${el}</span>`);
+  return createHtmlElements.join("");
+};
+
+const manageSpinner = (status) => {
+  if (status == true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("word_container").classList.add("hidden");
+  } else {
+    document.getElementById("spinner").classList.add("hidden");
+    document.getElementById("word_container").classList.remove("hidden");
+  }
 };
 
 loadLessons();
