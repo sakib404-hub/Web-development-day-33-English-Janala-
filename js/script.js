@@ -19,7 +19,7 @@ const displayLessons = (lessons) => {
     // console.log(lesson.level_no);
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML = `
-    <button onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary">
+    <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary btn-lesson">
     <i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}
     </button>
     `;
@@ -36,7 +36,19 @@ const loadLevelWord = (id) => {
   //// console.log(url);
   fetch(url)
     .then((res) => res.json())
-    .then((words) => displayLevelWord(words.data));
+    .then((words) => {
+      removeActivation();
+      const clickBtn = document.getElementById(`lesson-btn-${id}`);
+      clickBtn.classList.add("active");
+      displayLevelWord(words.data);
+    });
+};
+
+const removeActivation = () => {
+  const lessonBtns = document.querySelectorAll(".btn-lesson");
+  lessonBtns.forEach((btn) => {
+    btn.classList.remove("active");
+  });
 };
 
 const displayLevelWord = (words) => {
@@ -74,7 +86,7 @@ const displayLevelWord = (words) => {
               word.pronunciation ? word.pronunciation : "Found No Pronunciation"
             }</p>
           <div class="flex justify-between items-center">
-            <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
+            <button onclick="my_modal_5.showModal()" class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
               <i class="fa-solid fa-circle-info text-lg"></i>
             </button>
             <button class="btn bg-[#1A91FF10] focus:bg-[#1A91FF80]">
